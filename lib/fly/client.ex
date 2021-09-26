@@ -210,6 +210,31 @@ defmodule Fly.Client do
               }
             }
           }
+          allocations{
+            id
+            idShort
+            version
+            latestVersion
+            status
+            desiredStatus
+            totalCheckCount
+            passingCheckCount
+            warningCheckCount
+            criticalCheckCount
+            createdAt
+            updatedAt
+            canary
+            region
+            restarts
+            healthy
+            privateIP
+            taskName
+            checks {
+              status
+              output
+              name
+            }
+          }
         }
       }
     """

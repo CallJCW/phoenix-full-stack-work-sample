@@ -46,6 +46,26 @@ defmodule FlyWeb.AppLive.Show do
     end
   end
 
+  def summarize_checks(checks) do
+    {total, healthy} = accumulate_checks(checks)
+    "#{total} total, #{healthy} passing"
+  end
+
+  def accumulate_checks([check | checks]) do
+    #Logger.info("check is: #{inspect(check["status"])}")
+    if check["status"] == "passing" do
+      {total, healthy} = accumulate_checks(checks)
+      {total + 1, healthy + 1}
+    else
+      {total, healthy} = accumulate_checks(checks)
+      {total + 1, healthy}
+    end
+  end
+
+  def accumulate_checks([]) do
+    {0, 0}
+  end
+
   @impl true
   def handle_event("click", _params, socket) do
     {:noreply, assign(socket, count: socket.assigns.count + 1)}

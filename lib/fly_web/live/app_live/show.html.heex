@@ -104,7 +104,7 @@
                                       <%= pg["name"] %>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                      <%= pg["regions"] %>
+                                    <!-- Regions -->
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                       <%= pg["vmSize"]["name"] %>
@@ -138,10 +138,12 @@
                         <div>
                           <span class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
                             <%= if not is_nil(release["user"]) do %>
-                              <img class="inline-block h-8 w-8 rounded-full" src={release["user"]["avatarUrl"]} alt="">
+                              <img class="inline-block h-8 w-8 rounded-full" src={release["user"]["avatarUrl"]} title={release["user"]["name"]} alt={release["user"]["name"]}>
                             <% else %>
                               <!-- Heroicon name: solid/user -->
-                              <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <%  %>
+                              <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" role="img" aria-label="Unknown User">
+                                <title>Unknown User</title>
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                               </svg>
                             <% end %>
@@ -153,13 +155,15 @@
                           </div>
                           <%= if release["stable"] do %>
                             <p class="text-green-800">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" role="img" aria-label="Stable">
+                                <title>Stable</title>
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                               </svg>
                             </p>
                           <% else %>
                             <p class="text-red-800">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" role="img" aria-label="Not Stable">
+                                <title>Not Stable</title>
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                               </svg>
                             </p>
@@ -179,6 +183,98 @@
             </div>
           </div>
         </section>
+ <div class="space-y-6 lg:col-start-1 lg:col-span-4">
+          <!-- Instance list-->
+          <section>
+            <div class="bg-white shadow sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6">
+                <h2 class="text-lg leading-6 font-medium text-gray-900">
+                Instances
+                </h2>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <div class="sm:col-span-2">
+                  <dd class="mt-1 text-sm text-gray-900">
+                    <div class="flex flex-col">
+                      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                          <div class="overflow-hidden border-b border-gray-200">
+                            <table class="min-w-full divide-y divide-gray-200">
+                              <thead class="bg-gray-50">
+                                <tr>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Task
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Version
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Region
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Desired
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Health Checks
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Restarts
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody class="bg-white divide-y divide-gray-200">
+                                <%= for allocations <- @app["allocations"] do %>
+                                  <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["idShort"] %><!-- click for longer ID?-->
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["taskName"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["version"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["region"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["desiredStatus"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= allocations["status"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= summarize_checks(allocations["checks"]) %><!--Health Checks: write function in show.ex and call it here-->
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                      <%= allocations["restarts"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                      <%= allocations["createdAt"] %>
+                                    </td>
+                                  </tr>
+                                <% end %>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </dd>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   <% end %>
