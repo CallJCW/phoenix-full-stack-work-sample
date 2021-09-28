@@ -180,15 +180,24 @@ defmodule Fly.Client do
         app(name: $name) {
           id
           name
+          version
           organization {
             id
             slug
           }
-          deployed
-          status
+          deploymentStatus{
+            id
+            status
+            successful
+            version
+            description
+            desiredCount
+            placedCount
+            healthyCount
+            unhealthyCount
+          }
           processGroups {
             name
-            regions
             maxPerRegion
             vmSize {
               name

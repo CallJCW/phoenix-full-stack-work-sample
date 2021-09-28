@@ -6,7 +6,7 @@
           <div class="flex items-center justify-between h-16 px-4 sm:px-0">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+                <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" title="Workflow"> <!--update to fly icon-->
               </div>
               <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
@@ -32,6 +32,7 @@
           <div class="flex-1 min-w-0">
             <h2 class="text-2xl font-bold leading-7 text-white-900 sm:text-3xl sm:truncate">
               <%= @app_name %>
+              v<%= @app["version"] %>
               <p class={"px-2 mx-4 inline-flex text-xs leading-5 font-semibold rounded-full #{status_bg_color(@app)} #{status_text_color(@app)}"}>
                 <%= @app["status"] %>
               </p>
@@ -63,10 +64,62 @@
       </div>
     </header>
   </div>
-
   <%= if @app do %>
     <main class="-mt-32">
-      <div class="max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+      <div class="max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-1">
+        <section aria-labelledby="deployment-status" class="lg:col-start-3 lg:col-span-1">
+          <%= if not is_nil(@app["deploymentStatus"]) do %>
+          <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+            <h2 id="timeline-title" class="text-lg font-medium text-gray-900">Deployment Status</h2>
+            <!-- Deployment Status -->
+            <div class="mt-6 flow-root">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                            ID:
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <%= @app["deploymentStatus"]["id"] %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                          Version:
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          v<%= @app["deploymentStatus"]["version"] %>
+                        </td>
+                      </tr>
+                     <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                          Description:
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          v<%= @app["deploymentStatus"]["description"] %>
+                        </td>
+                      </tr>
+                     <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                          Instances:
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <%= @app["deploymentStatus"]["desiredCount"] %> desired, <%= @app["deploymentStatus"]["placedCount"] %> placed, <%= @app["deploymentStatus"]["healthyCount"] %> healthy, <%= @app["deploymentStatus"]["unhealthyCount"] %> unhealthy
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+          <% else %>
+          <section aria-labelledby="deployment-status" class="lg:col-start-1 lg:col-span-1">
+            <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+              No Current Deployment
+            </div>          
+          </section>
+          <% end %>
+        </section>
+
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
           <!-- Description list-->
           <section>
@@ -90,9 +143,6 @@
                                     Name
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Regions
-                                  </th>
-                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     VM Size
                                   </th>
                                 </tr>
@@ -103,11 +153,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                       <%= pg["name"] %>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    <!-- Regions -->
-                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                       <%= pg["vmSize"]["name"] %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      <%= pg["regions"] %>
                                     </td>
                                   </tr>
                                 <% end %>
@@ -123,7 +173,6 @@
             </div>
           </section>
         </div>
-
         <section aria-labelledby="timeline-title" class="lg:col-start-3 lg:col-span-1">
           <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
             <h2 id="timeline-title" class="text-lg font-medium text-gray-900">Timeline</h2>
@@ -183,7 +232,7 @@
             </div>
           </div>
         </section>
- <div class="space-y-6 lg:col-start-1 lg:col-span-4">
+        <div class="space-y-6 lg:col-start-1 lg:col-span-4">
           <!-- Instance list-->
           <section>
             <div class="bg-white shadow sm:rounded-lg">
