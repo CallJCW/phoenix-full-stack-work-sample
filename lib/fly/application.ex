@@ -4,6 +4,7 @@ defmodule Fly.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
   def start(_type, _args) do
     children = [
@@ -14,14 +15,17 @@ defmodule Fly.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Fly.PubSub},
       # Start the Endpoint (http/https)
-      FlyWeb.Endpoint
+      FlyWeb.Endpoint,
       # Start a worker by calling: Fly.Worker.start_link(arg)
       # {Fly.Worker, arg}
+
+      Fly.Periodically
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Fly.Supervisor]
+    Logger.info("CHILDREN: #{inspect(children)}")
     Supervisor.start_link(children, opts)
   end
 

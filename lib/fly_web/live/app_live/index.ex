@@ -13,11 +13,14 @@ defmodule FlyWeb.AppLive.Index do
         config: client_config(session),
         state: :loading,
         apps: [],
-        authenticated: true
+        authenticated: true,
+        page_title: "Fly - Apps"
       )
 
     # Only make the API call if the websocket is setup. Not on initial render.
     if connected?(socket) do
+      Client.subscribe("applist")
+      Client.subscribe("refresh")
       {:ok, fetch_apps(socket)}
     else
       {:ok, socket}
@@ -41,6 +44,17 @@ defmodule FlyWeb.AppLive.Index do
 
         put_flash(socket, :error, reason)
     end
+  end
+
+  @impl true
+  def handle_info({:listupdate, apps}, socket) do
+    Logger.info("socket inside handle_info is: #{inspect(socket)}")
+    {:noreply, assign(socket, :apps, apps)}
+  end
+
+  @impl true
+  def handle_info(:refresh, socket) do
+    {:noreply, fetch_apps(socket)}
   end
 
   def status_bg_color(app) do

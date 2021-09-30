@@ -33,6 +33,19 @@ defmodule Fly.Client do
 
   defp client, do: Application.get_env(:fly, :client_api)
 
+  def subscribe(topic) do
+    Phoenix.PubSub.subscribe(Fly.PubSub, topic)
+  end
+
+  def broadcast({:error, _} = error, _topic, _event), do: error
+  def broadcast({:ok, results}, topic, event) do
+    Phoenix.PubSub.broadcast(Fly.PubSub, topic, {event, results})
+    {:ok, results}
+  end
+
+
+
+
   # TESTING NOTES:
   # the tldr is:
   # 1. use the production graphql api, it’s fine!
@@ -161,6 +174,7 @@ defmodule Fly.Client do
     |> handle_response()
     |> case do
       {:ok, %{"apps" => %{"nodes" => apps}}} ->
+        broadcast({:ok, apps}, "applist", :listupdate)
         Logger.info("app list returned: #{inspect(apps)}")
         {:ok, apps}
 
@@ -205,7 +219,7 @@ defmodule Fly.Client do
               memoryMb
             }
           }
-          releases(last: 5) {
+          releases(first: 5) {
             totalCount
             nodes {
               version
@@ -251,7 +265,9 @@ defmodule Fly.Client do
     |> handle_response()
     |> case do
       {:ok, %{"app" => app}} ->
+        broadcast({:ok, app}, name, :appupdate)
         Logger.info("app returned: #{inspect(app)}")
+
         {:ok, app}
 
       {:error, _reason} = error ->

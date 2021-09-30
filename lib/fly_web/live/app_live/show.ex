@@ -14,12 +14,14 @@ defmodule FlyWeb.AppLive.Show do
         app: nil,
         app_name: name,
         count: 0,
-        authenticated: true
+        authenticated: true,
+        page_title: "Fly - Apps - #{name}"
       )
 
     # Only make the API call if the websocket is setup. Not on initial render.
     if connected?(socket) do
-      #Client.subscribe()
+      Client.subscribe(socket.assigns.app_name)
+      Client.subscribe("refresh")
       {:ok, fetch_app(socket)}
     else
       {:ok, socket}
@@ -70,6 +72,17 @@ defmodule FlyWeb.AppLive.Show do
   @impl true
   def handle_event("click", _params, socket) do
     {:noreply, assign(socket, count: socket.assigns.count + 1)}
+  end
+
+  @impl true
+  def handle_info({:appupdate, app}, socket) do
+    Logger.info("socket inside handle_info is: #{inspect(socket)}")
+    {:noreply, assign(socket, :app, app)}
+  end
+
+  @impl true
+  def handle_info(:refresh, socket) do
+    {:noreply, fetch_app(socket)}
   end
 
   def status_bg_color(app) do

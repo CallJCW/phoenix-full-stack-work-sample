@@ -1,4 +1,4 @@
-<div>
+<div id="app" phx-update="replace">
   <div class="bg-gray-800 pb-32">
     <nav class="bg-gray-800">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -70,7 +70,7 @@
         <section aria-labelledby="deployment-status" class="lg:col-start-3 lg:col-span-1">
           <%= if not is_nil(@app["deploymentStatus"]) do %>
           <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-            <h2 id="timeline-title" class="text-lg font-medium text-gray-900">Deployment Status</h2>
+            <h2 id="deployment-status" class="text-lg font-medium text-gray-900">Deployment Status</h2>
             <!-- Deployment Status -->
             <div class="mt-6 flow-root">
                 <table class="min-w-full divide-y divide-gray-200">
