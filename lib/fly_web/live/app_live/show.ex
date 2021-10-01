@@ -76,7 +76,7 @@ defmodule FlyWeb.AppLive.Show do
 
   @impl true
   def handle_info({:appupdate, app}, socket) do
-    Logger.info("socket inside handle_info is: #{inspect(socket)}")
+    #Logger.info("socket inside handle_info is: #{inspect(socket)}")
     {:noreply, assign(socket, :app, app)}
   end
 

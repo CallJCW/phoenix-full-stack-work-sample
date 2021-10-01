@@ -48,7 +48,7 @@ defmodule FlyWeb.AppLive.Index do
 
   @impl true
   def handle_info({:listupdate, apps}, socket) do
-    Logger.info("socket inside handle_info is: #{inspect(socket)}")
+    #Logger.info("socket inside handle_info is: #{inspect(socket)}")
     {:noreply, assign(socket, :apps, apps)}
   end
 
