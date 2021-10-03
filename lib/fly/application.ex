@@ -16,16 +16,13 @@ defmodule Fly.Application do
       {Phoenix.PubSub, name: Fly.PubSub},
       # Start the Endpoint (http/https)
       FlyWeb.Endpoint,
-      # Start a worker by calling: Fly.Worker.start_link(arg)
-      # {Fly.Worker, arg}
-
+      # Start the GraphQL refresh scheduler
       Fly.Periodically
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Fly.Supervisor]
-    Logger.info("CHILDREN: #{inspect(children)}")
     Supervisor.start_link(children, opts)
   end
 

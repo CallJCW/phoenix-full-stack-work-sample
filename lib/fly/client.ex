@@ -175,7 +175,7 @@ defmodule Fly.Client do
     |> case do
       {:ok, %{"apps" => %{"nodes" => apps}}} ->
         broadcast({:ok, apps}, "applist", :listupdate)
-        Logger.info("app list returned: #{inspect(apps)}")
+        #Logger.info("app list returned: #{inspect(apps)}")
         {:ok, apps}
 
       {:error, _reason} = error ->
@@ -193,6 +193,7 @@ defmodule Fly.Client do
       query($name: String!) {
         app(name: $name) {
           id
+          deployed
           name
           version
           organization {
@@ -266,7 +267,7 @@ defmodule Fly.Client do
     |> case do
       {:ok, %{"app" => app}} ->
         broadcast({:ok, app}, name, :appupdate)
-        Logger.info("app returned: #{inspect(app)}")
+        #Logger.info("app returned: #{inspect(app)}")
 
         {:ok, app}
 

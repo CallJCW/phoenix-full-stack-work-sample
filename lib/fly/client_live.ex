@@ -11,7 +11,7 @@ defmodule Fly.ClientLive do
   """
   @impl true
   def perform_query(query_string, args, config, fun_name) do
-    Logger.info("Live request for #{inspect(fun_name)}")
+    #Logger.info("Live request for #{inspect(fun_name)}")
     Neuron.query(query_string, args, config)
   end
 
