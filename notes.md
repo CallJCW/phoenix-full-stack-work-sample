@@ -10,7 +10,7 @@
 - Had to flip the releases query in Fly.Client.fetch_app/1 from last: 5 to first: 5. Not sure if the ordering changed in GraphQL. Should follow up to ensure that there is a consistent ordering now coming back from the query. If not, we can add an order by clause on the nodes.version or nodes.createdAt
 
 ## Future Work
-- Tests: ensure index app list and show app details are correct, app creation/destruction, org membership changes
+- Tests: ensure index app list and show app details are correct, ensure the pages properly update on app creation/destruction and org membership changes
 - periodically.ex @work_interval value should come from environmental variable to make it easy to tune for performance and load
 - Currently the show page Deployment Status causes awkwardness with the Timeline on wide screens, consider removing it entirely when Deployment Status is null
 - Consider adding flyctl apps functionality buttons: scale, destroy, move org, restart, suspend, resume
@@ -22,7 +22,7 @@
 - flyctl/GraphQL/API/WebUI synchronization to ensure schema and functionality changes - automation/templating? Need to choose source of truth, currently defaulting to flyctl as authoritative
 - Additional logging will inevitably be required
 - Research A/B testing - Phoenix on Elixir equivalent of A/Bingo (https://github.com/ryanb/abingo) by @patio11. Cursory search shows https://github.com/alvesdan/abex
-- Consider graphical additions for overview and individual apps (pageviews, queries, transactions, estimated costs), useful for operations centers. Might not be practical to build it into this app, alternatively offer templating and assistance to customers.
+- Consider additions of line graphs for overview and individual apps (pageviews, queries, transactions, estimated costs), useful for operations centers. Some values that are important to customers might not be practical to build on the fly side, alternatively offer templating and assistance to customers.
 - Include info from flyctl info: protocols/ports, IPv4 addresses, IPv6 addresses
 - Update phoenix_html from 3.0.2 to 3.0.4
 
